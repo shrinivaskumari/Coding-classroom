@@ -27,6 +27,18 @@ A comprehensive online coding classroom platform built with Django that enables 
 - **Deadline Tracking**: Never miss assignment deadlines
 - **Progress Monitoring**: View personal learning progress
 
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| **Backend Framework** | Django 4.2+ |
+| **Frontend Framework** | Bootstrap 5 |
+| **Programming Language** | Python 3.8+ |
+| **Database** | PostgreSQL (Production) |
+| **Authentication** | Django Authentication System |
+| **Code Execution** | Python Subprocess, JDK, G++ |
+
 ### 🛠️ Technical Features
 - **Role-based Access**: Separate interfaces for teachers and students
 - **Secure Code Execution**: Sandboxed environment for code evaluation
