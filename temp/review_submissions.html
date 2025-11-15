@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Submissions | SCHOLAR</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Highlight.js for code syntax highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github.min.css">
+    <style>
+        :root {
+            --primary-color: #3a5ec7;
+            --secondary-color: #6c757d;
+            --accent-color: #e9ecef;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --light-bg: #f8f9fa;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        
+        .page-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2a4bb0 100%);
+            color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 20px;
+        }
+        
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid #eaeaea;
+            font-weight: 600;
+            padding: 15px 20px;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .submission-item {
+            border-left: 4px solid var(--primary-color);
+            transition: all 0.3s;
+        }
+        
+        .submission-item:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .code-container {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eaeaea;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #2a4bb0;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .form-control, .form-select {
+            padding: 0.8rem 1rem;
+            border: 1px solid #e1e5eb;
+            border-radius: 6px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(58, 94, 199, 0.25);
+        }
+        
+        .student-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .student-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+        
+        .alert {
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        
+        .hljs {
+            border-radius: 6px;
+            padding: 15px !important;
+            background: #f8f9fa !important;
+        }
+        
+        pre {
+            margin: 0;
+            overflow-x: auto;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #eaeaea;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .copy-btn:hover {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'index' %}">
+                <i class="fas fa-graduation-cap me-2"></i>CodingClass
+            </a>
+            <div class="d-flex">
+                <a href="{% url 'teacher_dashboard' %}" class="btn btn-outline-primary me-2">
+                    <i class="fas fa-tachometer-alt me-1"></i> Dashboard
+                </a>
+                <a href="{% url 'logout' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-sign-out-alt me-1"></i> Logout
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1><i class="fas fa-code-review me-2"></i> Review Submissions</h1>
+                    <p class="mb-0">Evaluate student work and provide feedback</p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <i class="fas fa-file-code fa-3x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+
+        {% if submissions %}
+        <!-- Submissions List -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">Student Submissions</h5>
+                    </div>
+                    <div class="card-body">
+                        {% for submission in submissions %}
+                        <div class="card submission-item mb-4">
+                            <div class="card-body">
+                                <!-- Student Info -->
+                                <div class="student-info">
+                                    <div class="student-avatar">
+                                        {{ submission.student.username|first|upper }}
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0">{{ submission.student.username }}</h6>
+                                        <small class="text-muted">Submitted on {{ submission.submitted_at|date:"M d, Y H:i" }}</small>
+                                    </div>
+                                </div>
+
+                                <!-- Submitted Code -->
+                                <div class="mb-3">
+                                    <h6>Submitted Code:</h6>
+                                    <div class="code-container">
+                                        <div class="code-header">
+                                            <small class="text-muted">{{ submission.assignment.language|upper }} CODE</small>
+                                            <button class="copy-btn" onclick="copyCode('code-{{ submission.id }}')">
+                                                <i class="fas fa-copy me-1"></i> Copy
+                                            </button>
+                                        </div>
+                                        <pre><code id="code-{{ submission.id }}" class="{{ submission.assignment.language }}">{{ submission.code }}</code></pre>
+                                    </div>
+                                </div>
+
+                                <!-- Program Output -->
+                                <div class="mb-3">
+                                    <h6>Program Output:</h6>
+                                    <div class="code-container">
+                                        <pre><code class="language-plaintext">{{ submission.output }}</code></pre>
+                                    </div>
+                                </div>
+
+                                <!-- Feedback Form -->
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="sub_id" value="{{ submission.id }}">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="marks-{{ submission.id }}" class="form-label">Marks</label>
+                                            <input type="number" class="form-control" id="marks-{{ submission.id }}" 
+                                                name="marks" value="{{ submission.marks|default:'' }}" 
+                                                placeholder="Enter marks" min="0" max="100" step="0.5">
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label for="feedback-{{ submission.id }}" class="form-label">Feedback</label>
+                                            <textarea class="form-control" id="feedback-{{ submission.id }}" 
+                                                name="feedback" rows="3" placeholder="Provide constructive feedback">{{ submission.feedback }}</textarea>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-paper-plane me-1"></i> Submit Feedback
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <!-- Empty State -->
+        <div class="card">
+            <div class="card-body">
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <h4>No submissions yet</h4>
+                    <p>Students haven't submitted any work for this assignment.</p>
+                    <a href="{% url 'teacher_dashboard' %}" class="btn btn-primary mt-2">
+                        <i class="fas fa-arrow-left me-1"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Messages -->
+        {% for message in messages %}
+        <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} mt-4">
+            <i class="fas fa-{% if message.tags == 'error' %}exclamation-circle{% else %}check-circle{% endif %} me-2"></i>
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Highlight.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        // Initialize syntax highlighting
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+        
+        // Copy code function
+        function copyCode(elementId) {
+            const codeElement = document.getElementById(elementId);
+            const textArea = document.createElement('textarea');
+            textArea.value = codeElement.textContent;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            
+            // Show feedback
+            const copyBtn = event.target.closest('.copy-btn');
+            const originalHtml = copyBtn.innerHTML;
+            copyBtn.innerHTML = '<i class="fas fa-check me-1"></i> Copied!';
+            setTimeout(() => {
+                copyBtn.innerHTML = originalHtml;
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
