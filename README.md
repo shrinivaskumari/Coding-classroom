@@ -25,7 +25,7 @@ A comprehensive, role-based web application built with Django that enables teach
 
 ## 🛠️ Tech Stack
 
-**Backend:** Django 4.2+ | **Frontend:** Bootstrap 5 | **Database:** SQLite/PostgreSQL  
+**Backend:** Django 4.2+ | **Frontend:** Bootstrap 5 | **Database:** PostgreSQL  
 **Languages:** Python, Java, C++ | **Authentication:** Django Auth
 
 ## 🚀 Quick Start
